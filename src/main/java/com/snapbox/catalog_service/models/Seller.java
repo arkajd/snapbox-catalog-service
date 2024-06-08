@@ -1,5 +1,6 @@
 package com.snapbox.catalog_service.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +18,6 @@ public class Seller {
     private String name;
     private String description;
     @OneToMany(mappedBy = "seller")
+    @JsonBackReference
     private List<Product> productList;
 }

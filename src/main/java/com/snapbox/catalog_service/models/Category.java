@@ -1,5 +1,6 @@
 package com.snapbox.catalog_service.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,9 +22,10 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parentCategory;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parentCategory")
     private List<Category> subcategories;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<Product> productList;
 }

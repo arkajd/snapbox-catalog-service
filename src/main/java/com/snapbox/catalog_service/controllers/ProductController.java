@@ -1,12 +1,12 @@
 package com.snapbox.catalog_service.controllers;
 
+import com.snapbox.catalog_service.dtos.AddProductRequest;
+import com.snapbox.catalog_service.dtos.ProductDto;
 import com.snapbox.catalog_service.models.Product;
 import com.snapbox.catalog_service.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/")
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
     @Autowired
     public ProductController(ProductService productService){
@@ -22,12 +22,19 @@ public class ProductController {
     }
 
     @GetMapping("/products/categories/{categoryId}")
-    public List<Product> getProductsByCategory(@PathVariable Long categoryId){
-        return productService.getProductsByCategory(categoryId);
+    public ResponseEntity<List<ProductDto>> getProductsByCategory(@PathVariable Long categoryId){
+        List<ProductDto> productList = productService.getProductsByCategory(categoryId);
+        return ResponseEntity.ok(productList);
     }
 
     @GetMapping("/products/{productId}")
-    public Product getProductById(@PathVariable Long productId){
-        return productService.getProductById(productId);
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long productId){
+        ProductDto productDto = productService.getProductById(productId);
+        return ResponseEntity.ok(productDto);
+    }
+
+    @PostMapping("/products")
+    public void addProduct(@RequestBody AddProductRequest addProductRequest){
+        productService.addProduct(addProductRequest);
     }
 }
